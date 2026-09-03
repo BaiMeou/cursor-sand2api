@@ -44,6 +44,8 @@
 
 ## 快速开始
 
+你真该让你的agent来读这一段，人们总是难以理解这些文档不是吗？
+
 ```bash
 git clone https://github.com/BaiMeou/cursor-sand2api.git
 cd cursor-sand2api
