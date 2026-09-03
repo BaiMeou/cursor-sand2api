@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>cursor-sand2api</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◈</text></svg>" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+          <div class="brand">
+            <span class="brand-mark">◈</span>
+            <span class="brand-text">cursor-sand2api</span>
+          </div>
+          <button class="icon-btn" id="new-chat" title="新建对话 (Ctrl+K)" aria-label="新建对话">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+          </button>
+        </div>
+
+        <div class="conversation-list" id="conversation-list"></div>
+
+        <div class="sidebar-foot">
+          <button class="ghost-btn" id="open-settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+            <span>设置</span>
+          </button>
+          <div class="health" id="health" title="服务状态">
+            <span class="dot" id="health-dot"></span>
+            <span id="health-text">连接中…</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button class="icon-btn only-narrow" id="toggle-sidebar" aria-label="切换侧栏">
+            <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
+          </button>
+
+          <div class="model-picker" id="model-picker">
+            <button class="model-btn" id="model-btn" aria-haspopup="listbox" aria-expanded="false">
+              <span class="model-name" id="model-name">加载模型…</span>
+              <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="model-menu" id="model-menu" role="listbox" hidden>
+              <input type="search" id="model-search" placeholder="搜索模型…" autocomplete="off" />
+              <div class="model-options" id="model-options"></div>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <span class="badge" id="turn-usage" hidden></span>
+            <button class="icon-btn" id="toggle-params" title="生成参数" aria-label="生成参数">
+              <svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" /></svg>
+            </button>
+            <button class="icon-btn" id="toggle-theme" title="切换主题" aria-label="切换主题">
+              <svg viewBox="0 0 24 24" id="theme-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <section class="params" id="params" hidden>
+          <label class="param">
+            <span>系统提示词</span>
+            <textarea id="p-system" rows="2" placeholder="留空则不发送 system"></textarea>
+          </label>
+          <div class="param-row">
+            <label class="param">
+              <span>max_tokens</span>
+              <input type="number" id="p-maxtokens" min="0" step="64" placeholder="不限" />
+            </label>
+            <label class="param">
+              <span>temperature</span>
+              <input type="number" id="p-temperature" min="0" max="2" step="0.1" placeholder="默认" />
+            </label>
+            <label class="param">
+              <span>思考深度</span>
+              <select id="p-effort">
+                <option value="">默认</option>
+                <option value="none">none</option>
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+                <option value="xhigh">xhigh</option>
+                <option value="max">max</option>
+              </select>
+            </label>
+            <label class="param">
+              <span>输出格式</span>
+              <select id="p-format">
+                <option value="">文本</option>
+                <option value="json_object">JSON</option>
+              </select>
+            </label>
+          </div>
+          <label class="param">
+            <span>停止词（逗号分隔）</span>
+            <input type="text" id="p-stop" placeholder="例如：\n\n, END" />
+          </label>
+          <p class="param-note">
+            temperature 上游没有对应旋钮，会在响应里如实报为已忽略；max_tokens 与停止词是真生效的。
+          </p>
+        </section>
+
+        <div class="messages" id="messages">
+          <div class="welcome" id="welcome">
+            <div class="welcome-mark">◈</div>
+            <h1>cursor-sand2api</h1>
+            <p>把 Cursor 订阅凭证转成 OpenAI 兼容接口。这个界面直接调用本机的 <code>/v1/chat/completions</code>。</p>
+            <div class="welcome-tips">
+              <button class="tip" data-prompt="用三句话解释一下什么是 Connect 协议，以及它和 gRPC-Web 的区别。">解释 Connect 协议</button>
+              <button class="tip" data-prompt="写一个 Node.js 函数，把 SSE 流解析成一个个事件对象，要处理跨 chunk 的半行。">写个 SSE 解析器</button>
+              <button class="tip" data-prompt="我给你一张图，请描述你看到了什么。">看图说话（先加张图）</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="attachments" id="attachments" hidden></div>
+          <div class="composer" id="composer">
+            <button class="icon-btn attach-btn" id="attach-btn" title="添加图片或文档" aria-label="添加附件">
+              <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
+            </button>
+            <input type="file" id="file-input" multiple hidden
+              accept="image/*,.pdf,.txt,.md,.csv,.json,.xml,.html,.docx,.xlsx,.pptx" />
+            <textarea id="input" rows="1" placeholder="发消息…（Enter 发送，Shift+Enter 换行）"></textarea>
+            <button class="send-btn" id="send" title="发送" aria-label="发送">
+              <svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+            </button>
+            <button class="send-btn stop" id="stop" title="停止生成" aria-label="停止生成" hidden>
+              <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
+            </button>
+          </div>
+          <div class="composer-foot">
+            <span id="composer-hint">Enter 发送 · Shift+Enter 换行 · 可直接粘贴或拖入图片</span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="modal" id="settings">
+      <form method="dialog" class="modal-body">
+        <h2>设置</h2>
+
+        <label class="field">
+          <span>API Key</span>
+          <input type="password" id="s-apikey" placeholder="服务端 API_KEY，未设置则留空" autocomplete="off" />
+          <small>只存在这台浏览器的 localStorage 里，随请求发往本机代理。</small>
+        </label>
+
+        <label class="field">
+          <span>服务地址</span>
+          <input type="text" id="s-base" placeholder="留空表示当前站点" autocomplete="off" />
+          <small>跨机访问时填 http://主机:13000。</small>
+        </label>
+
+        <label class="field checkbox">
+          <input type="checkbox" id="s-stream" checked />
+          <span>流式输出</span>
+        </label>
+
+        <label class="field checkbox">
+          <input type="checkbox" id="s-thinking" checked />
+          <span>显示思考过程</span>
+        </label>
+
+        <div class="field">
+          <span>服务状态</span>
+          <pre class="health-dump" id="s-health">—</pre>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="ghost-btn danger" id="s-clear">清空全部对话</button>
+          <button value="close" class="primary-btn">完成</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" hidden></div>
+    <script src="markdown.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

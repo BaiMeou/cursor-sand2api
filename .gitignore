@@ -1,0 +1,15 @@
+node_modules/
+token.json
+token-*.json
+token-disabled.json
+*.log
+.DS_Store
+.env
+.idea/
+.vscode/
+workspace/
+workspace-official/
+scripts/shots/
+_tmp/
+credentials/
+*.tgz

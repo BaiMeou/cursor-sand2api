@@ -1,0 +1,3 @@
+# Shell scripts run on the Linux target. Checked out with CRLF on Windows they
+# fail at the shebang line with a bare $'\r' error.
+*.sh text eol=lf

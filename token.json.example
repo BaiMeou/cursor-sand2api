@@ -1,0 +1,16 @@
+{
+  "tokens": [
+    {
+      "name": "sand-ultra",
+      "kind": "sand",
+      "accessToken": "your-cursor-access-token-here",
+      "machineId": "your-machine-id-here",
+      "macMachineId": "your-mac-machine-id-here"
+    },
+    {
+      "name": "official-sdk",
+      "kind": "api",
+      "apiKey": "crsr_your-cursor-user-api-key-here"
+    }
+  ]
+}
